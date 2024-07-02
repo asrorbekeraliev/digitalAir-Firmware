@@ -1,7 +1,7 @@
 #include <ESP8266WiFi.h>
-#include <espnow.h>
-#include <ArduinoJson.h>
 #include <ESP8266HTTPClient.h>
+#include <WiFiClientSecure.h>
+#include <ArduinoJson.h>
 #include "DHT.h"
 #include <PMS.h>
 #include <SoftwareSerial.h>
@@ -41,9 +41,10 @@ void connectToWiFi() {
 
 // Function for HTTP POST request
 int postAPI(String JSONMessage) {
-    String url = "http://backend.helptech.uz/api/v1/parameter/add";
-    WiFiClient client;
+    String url = "https://backend.helptech.uz/api/v1/parameter/add";
+    WiFiClientSecure client;
     HTTPClient http;
+    client.setInsecure();
     http.begin(client, url);
     http.addHeader("Content-Type", "application/json");
     int httpCode = http.POST(JSONMessage);   // Send the request
